@@ -15,3 +15,4 @@ def Nishu():
 if __name__=="__main__":
     #app.run(debug=True) # automatically change show on broswer if debug=True.Don't need to reload the page.
     app.run(host='127.0.0.1', port=8000, debug=True)
+
