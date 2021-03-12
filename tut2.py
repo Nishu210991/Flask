@@ -3,13 +3,13 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello():
-    return render_template('index.html')
+    return render_template('index1.html')
 
 
 @app.route('/about')
 def Nishu():
     name="Nishu"
-    return render_template('about.html', name=name)
+    return render_template('about1.html', name=name)
 
 if __name__=="__main__":
     #app.run(debug=True) # automatically change show on broswer if debug=True.Don't need to reload the page.
