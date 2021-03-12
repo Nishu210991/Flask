@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
@@ -24,7 +24,7 @@ def about():
     return render_template('about.html')
 
 @app.route("/contact", methods=['GET', 'POST'])
-def contact(request):
+def contact():
     if (request.method == "POST"):
 
         '''Add Entry to the Database'''
@@ -33,7 +33,7 @@ def contact(request):
         phone = request.form.get('phone')
         message=request.form.get('message')
     #---Database field_name= sno, name, email, phone_num, msg, date
-        entry = Contacts(name='name', email='email', phone_num='phone', msg='message', date= datetime.now())
+        entry = Contacts(name=name, email=email, phone_num=phone, mes=message, date= datetime.now())
         db.session.add(entry)
         db.session.commit()
     return render_template('contact.html')
