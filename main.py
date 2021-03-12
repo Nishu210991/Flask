@@ -8,12 +8,12 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/Scorpions'
 db = SQLAlchemy(app)
 
 class Contacts(db.Model):
-    sno = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80),  nullable=False)
-    email = db.Column(db.String(20),  nullable=False)
-    phone_num = db.Column(db.String(20), nullable=False)
-    mes = db.Column(db.String(120),  nullable=False)
-    date = db.Column(db.String(20),  nullable=True)
+    sno= db.Column(db.Integer, primary_key=True)
+    name= db.Column(db.String(80),  nullable=False)
+    email= db.Column(db.String(20),  nullable=False)
+    phone_num= db.Column(db.String(20), nullable=False)
+    msg= db.Column(db.String(120),  nullable=False)
+    date= db.Column(db.String(20),  nullable=True)
 
 @app.route('/')
 def home():
@@ -33,7 +33,7 @@ def contact():
         phone = request.form.get('phone')
         message=request.form.get('message')
     #---Database field_name= sno, name, email, phone_num, msg, date
-        entry = Contacts(name=name, email=email, phone_num=phone, mes=message, date= datetime.now())
+        entry = Contacts(name=name, email=email, phone_num=phone, msg=message, date= datetime.now())
         db.session.add(entry)
         db.session.commit()
     return render_template('contact.html')
@@ -41,8 +41,6 @@ def contact():
 @app.route("/post")
 def post():
     return render_template('post.html')
-
-#app.run(debug=True)
 
 if __name__=="__main__":
     app.run(host='127.0.0.1', port=5555 , debug=True)
