@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+#from datetime import datetime
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/Scorpions'
@@ -12,7 +12,7 @@ class Contacts(db.Model):
     name = db.Column(db.String(80),  nullable=False)
     email = db.Column(db.String(20),  nullable=False)
     phone_num = db.Column(db.String(20), nullable=False)
-    mes = db.Column(db.String(120),  nullable=False)
+    msg = db.Column(db.String(120),  nullable=False)
     date = db.Column(db.String(20),  nullable=True)
 
 @app.route('/')
@@ -25,17 +25,17 @@ def about():
 
 @app.route("/contact", methods=['GET', 'POST'])
 def contact(request):
-    if (request.method == "POST"):
+    if (request.method== "POST"):
 
         '''Add Entry to the Database'''
-        name  = request.form.get('name')
-        email = request.form.get('email')
-        phone = request.form.get('phone')
+        name= request.form.get('name')
+        email= request.form.get('email')
+        phone= request.form.get('phone')
         message=request.form.get('message')
-    #---Database field_name= sno, name, email, phone_num, msg, date
-        entry = Contacts(name='name', email='email', phone_num='phone', msg='message', date= datetime.now())
+        entry = Contacts(name=name, email=email, phone_num=phone, msg=message)
         db.session.add(entry)
         db.session.commit()
+
     return render_template('contact.html')
 
 @app.route("/post")
