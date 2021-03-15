@@ -21,11 +21,15 @@ def contact_list():
 @app.route("/contact-delete", methods=['POST'])
 def contact_delete():
     if (request.method == "POST"):
-        results = get_contact()
+        # results = get_contact()
         id = request.form.get('c_id')
         delete_contact(id)
-        return render_template('contact_us_list.html', results={"data": results, "messages": "Record Deleted "
-                                                                                             "Successfully!"})
+        # return render_template('contact_us_list.html', results={"data": results, "messages": "Record Deleted "
+        #                                                                                     "Successfully!"})
+        if (delete_contact):
+            results = get_contact()
+            return render_template('contact_us_list.html', results={"data": results, "messages": ""})
+
 @app.route("/contact", methods=['POST', 'GET'])
 def contact():
     if (request.method == "POST"):
