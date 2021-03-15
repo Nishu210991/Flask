@@ -18,17 +18,18 @@ def contact_list():
     results=get_contact()
     return render_template('contact_us_list.html', results={"data":results, "messages":""})
 
-@app.route("/contact-delete", methods=['POST'])
+@app.route("/contact-delete", methods=['POST', 'GET'])
 def contact_delete():
     if (request.method == "POST"):
-        # results = get_contact()
         id = request.form.get('c_id')
         delete_contact(id)
-        # return render_template('contact_us_list.html', results={"data": results, "messages": "Record Deleted "
-        #                                                                                     "Successfully!"})
+
         if (delete_contact):
             results = get_contact()
-            return render_template('contact_us_list.html', results={"data": results, "messages": ""})
+            return render_template('contact_us_list.html', results={"data": results, "messages": "Record Deleted "
+                                                                                              "Sucessfully"})
+
+    return render_template('contact_us_list.html', results= {"data":get_contact()})
 
 @app.route("/contact", methods=['POST', 'GET'])
 def contact():
