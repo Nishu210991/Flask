@@ -1,19 +1,9 @@
 from flask import Flask, render_template, request
-from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/Scorpions'
-# code canbe copied from https://flask-sqlalchemy.palletsprojects.com/en/2.x/quickstart/
-db = SQLAlchemy(app)
+from db_connection import add_contact, get_contact, delete_contact
 
-class Contacts(db.Model):
-    sno= db.Column(db.Integer, primary_key=True)
-    name= db.Column(db.String(80),  nullable=False)
-    email= db.Column(db.String(20),  nullable=False)
-    phone_num= db.Column(db.String(20), nullable=False)
-    msg= db.Column(db.String(120),  nullable=False)
-    date= db.Column(db.String(20),  nullable=True)
+app = Flask(__name__)
 
 @app.route('/')
 def home():
@@ -23,20 +13,38 @@ def home():
 def about():
     return render_template('about.html')
 
-@app.route("/contact", methods=['GET', 'POST'])
-def contact():
-    if (request.method == "POST"):
+@app.route("/contact-list", methods=['GET'])
+def contact_list():
+    results=get_contact()
+    return render_template('contact_us_list.html', results={"data":results, "messages":""})
 
-        '''Add Entry to the Database'''
+@app.route("/contact-delete", methods=['POST'])
+def contact_delete():
+    if (request.method == "POST"):
+        results = get_contact()
+        id = request.form.get('c_id')
+        delete_contact(id)
+        return render_template('contact_us_list.html', results={"data":results, "messages":"Record Deleted "
+                                                                                         "Successfully!"})
+
+@app.route("/contact", methods=['POST', 'GET'])
+def contact():
+    # if (request.method == "GET"):
+    #     return render_template('contact.html', params={})
+    if (request.method == "POST"):
         name  = request.form.get('name')
         email = request.form.get('email')
         phone = request.form.get('phone')
         message=request.form.get('message')
-    #---Database field_name= sno, name, email, phone_num, msg, date
-        entry = Contacts(name=name, email=email, phone_num=phone, msg=message, date= datetime.now())
-        db.session.add(entry)
-        db.session.commit()
-    return render_template('contact.html')
+
+        sql = "INSERT INTO contacts (name, email, phone_num, msg, date) VALUES (%s, %s, %s, %s, %s)"
+        val = (name, email ,phone ,message, datetime.now())
+        add_contact(sql, val)
+
+        params = {"success": "Thanks for contacting us, our team will coordinate with you soon!",
+                  "is_success":True}
+        return render_template('contact.html', params=params)
+    return render_template('contact.html', params={})
 
 @app.route("/post")
 def post():
