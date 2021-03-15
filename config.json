@@ -1,13 +1,13 @@
 {
     "params": {
-      "websitename": "The Scorpions",
+      "websitename": "The Scorpion's Code" ,
        "database_name": "Scorpions",
        "database_user": "root",
        "database_password": "",
         "host": "localhost",
         "port": 3306,
       "gmail_user": "",
-     "gmail_passwor": "",
-      "all_user": ["vishavjeet", "Anupam","Nimesh"]
+     "gmail_password": "",
+      "all_user": ["vishavjeet", "Anupam","Nishu"]
     }
 }

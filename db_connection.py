@@ -25,9 +25,15 @@ def get_contact():
     cur.execute(sql)
     return cur.fetchall()
 
-def delete_contact(id):
-    sql=f"DELETE FROM contacts WHERE sno = {id}"
+# def delete_contact(id):
+#     sql=f"DELETE FROM contacts WHERE sno = {id}"
+#     db = mysql_db()
+#     cur = db.cursor()
+#     cur.execute(sql)
+
+def delete_contact(sql1, id):
     db = mysql_db()
     cur = db.cursor()
-    cur.execute(sql)
+    cur.execute(sql1, id)
+    db.commit()
 
