@@ -23,13 +23,16 @@ def contact_delete():
     if (request.method == "POST"):
         id = request.form.get('c_id')
         delete_contact(id)
-
-        if (delete_contact):
-            results = get_contact()
-            return render_template('contact_us_list.html', results={"data": results, "messages": "Record Deleted "
+        results = get_contact()
+        return render_template('contact_us_list.html', results={"data": results, "messages": "Record Deleted "
                                                                                               "Sucessfully"})
+        # delete_contact where is define, never run if condition
+        # if (delete_contact):
+        #     results = get_contact()
+        #     return render_template('contact_us_list.html', results={"data": results, "messages": "Record Deleted "
+        #                                                                                       "Sucessfully"})
 
-    return render_template('contact_us_list.html', results= {"data":get_contact()})
+         # return render_template('contact_us_list.html', results= {"data":get_contact()})
 
 @app.route("/contact", methods=['POST', 'GET'])
 def contact():
