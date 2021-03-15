@@ -3,19 +3,21 @@ from datetime import datetime
 from flask_mail import Mail
 from flask_mail import Message
 
-from db_connection import add_contact, get_contact, delete_contact, mysql_db
+
+from db_connection import add_contact, get_contact, delete_contact, mysql_db, get_post
 
 app = Flask(__name__)
 
 app.config.update(
-   MAIL_SERVER= 'localhost',
-   MAIL_PORT= 25,
-   MAIL_USER_SSL= False,
-   MAIL_USERNAME=  "root",
-   MAIL_PASSWORD= ""
+   MAIL_SERVER= 'smtp.sendgrid.net',
+   MAIL_PORT= 465,
+   MAIL_USER_SSL= True,
+   MAIL_USERNAME=  "smtp.sendgrid.net'",
+   MAIL_PASSWORD= "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",
 )
+
 mail= Mail(app)
-mail.init_app(app)
+#mail.init_app(app)
 
 
 @app.route('/')
@@ -36,10 +38,8 @@ def contact_delete():
     if (request.method == "POST"):
         id = request.form.get('c_id')
         delete_contact(id)
-
-        if (delete_contact):
-            results = get_contact()
-            return render_template('contact_us_list.html', results={"data": results, "messages": "Record Deleted "
+        results = get_contact()
+        return render_template('contact_us_list.html', results={"data": results, "messages": "Record Deleted "
                                                                                               "Sucessfully"})
 
     return render_template('contact_us_list.html', results= {"data":get_contact()})
@@ -56,20 +56,27 @@ def contact():
         val = (name, email ,phone ,message, datetime.now())
         add_contact(sql, val)
 
-        msg = Message("Hello",
-                      sender="from@example.com",
-                      recipients=["to@example.com"])
-        print(msg)
-        mail.send(msg)
+        # msg = Message("Hello",
+        #               sender="python.ds.com@gmail.com",
+        #               recipients=["singh.vishavjeet11@gmail.com"])
+        # print(msg)
+        # mail.send(msg)
 
+
+        mail.send_message('New message from ',
+                          sender="python.ds.com@gmail.com",
+                          recipients="singh.vishavjeet11@gmail.com",
+                          body="message",
+                          )
         params = {"success": "Thanks for contacting us, our team will coordinate with you soon!",
                   "is_success":True}
         return render_template('contact.html', params=params)
     return render_template('contact.html', params={})
 
-@app.route("/post")
-def post():
-    return render_template('post.html')
+@app.route("/post/<string:post_slug>", methods=['GET'])
+def post_route(post_slug):
+    post=get_post(post_slug)
+    return render_template('post.html' , post=post)
 
 if __name__=="__main__":
     app.run(host='127.0.0.1', port=5555 , debug=True)
