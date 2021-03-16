@@ -40,7 +40,6 @@ def delete_contact(id):
 
 def get_post(slug):
     sql=f"Select * from posts where slug='{slug}'"
-    print(sql)
     db = mysql_db()
     cur = db.cursor()
     cur.execute(sql)

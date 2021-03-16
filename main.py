@@ -1,10 +1,8 @@
 from flask import Flask, render_template, request
 from datetime import datetime
 from flask_mail import Mail
-from flask_mail import Message
 
-
-from db_connection import add_contact, get_contact, delete_contact, mysql_db, get_post
+from db_connection import add_contact, get_contact, delete_contact, get_post
 
 app = Flask(__name__)
 
@@ -17,8 +15,6 @@ app.config.update(
 )
 
 mail= Mail(app)
-#mail.init_app(app)
-
 
 @app.route('/')
 def home():
@@ -55,13 +51,6 @@ def contact():
         sql = "INSERT INTO contacts (name, email, phone_num, msg, date) VALUES (%s, %s, %s, %s, %s)"
         val = (name, email ,phone ,message, datetime.now())
         add_contact(sql, val)
-
-        # msg = Message("Hello",
-        #               sender="python.ds.com@gmail.com",
-        #               recipients=["singh.vishavjeet11@gmail.com"])
-        # print(msg)
-        # mail.send(msg)
-
 
         mail.send_message('New message from ',
                           sender="python.ds.com@gmail.com",
