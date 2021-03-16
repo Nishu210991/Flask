@@ -6,8 +6,10 @@
        "database_password": "",
         "host": "localhost",
         "port": 3306,
-      "gmail_user": "",
-     "gmail_password": "",
+      "gmail_user": "python.ds.com@gmail.com",
+      "gmail_password": "python-ds.com@2020",
+      "sendgrid_user": "apikey",
+      "sendgrid_apikey": "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",
       "all_user": ["vishavjeet", "Anupam","Nishu"]
     }
 }

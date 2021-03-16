@@ -5,19 +5,10 @@ from flask_mail import Message
 
 
 from db_connection import add_contact, get_contact, delete_contact, mysql_db, get_post
+from emailer import SendEmail
 
 app = Flask(__name__)
 
-app.config.update(
-   MAIL_SERVER= 'smtp.sendgrid.net',
-   MAIL_PORT= 465,
-   MAIL_USER_SSL= True,
-   MAIL_USERNAME=  "smtp.sendgrid.net'",
-   MAIL_PASSWORD= "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",
-)
-
-mail= Mail(app)
-#mail.init_app(app)
 
 
 @app.route('/')
@@ -55,21 +46,23 @@ def contact():
         sql = "INSERT INTO contacts (name, email, phone_num, msg, date) VALUES (%s, %s, %s, %s, %s)"
         val = (name, email ,phone ,message, datetime.now())
         add_contact(sql, val)
+        success_message= "Thanks for contacting us, our team will coordinate with you soon!"
 
-        # msg = Message("Hello",
-        #               sender="python.ds.com@gmail.com",
-        #               recipients=["singh.vishavjeet11@gmail.com"])
-        # print(msg)
-        # mail.send(msg)
+        params = {"success": success_message, "is_success":True}
+        # Email Trigger
+        sendEmail = SendEmail()
+
+        # sendEmail.smtp_ssl(message, email)
+
+        # sendEmail.html_smtp_ssl("New Enquiry", message, email)
+
+        filename = "rent-agreement-vishavjeet.pdf"
+        sendEmail.attachments_email_ssl("New Enquiry", message, email, filename)
 
 
-        mail.send_message('New message from ',
-                          sender="python.ds.com@gmail.com",
-                          recipients="singh.vishavjeet11@gmail.com",
-                          body="message",
-                          )
-        params = {"success": "Thanks for contacting us, our team will coordinate with you soon!",
-                  "is_success":True}
+        #sendEmail.flask_smpt(success_message, [email])
+        # sendEmail.flask_sendgrid(success_message, [email])
+
         return render_template('contact.html', params=params)
     return render_template('contact.html', params={})
 
